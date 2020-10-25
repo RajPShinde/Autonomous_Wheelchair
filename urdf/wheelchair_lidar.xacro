@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki.xacro" name="wheelchair">
+    <xacro:include filename="$(find wheelchair)/urdf/wheelchair.urdf" />
+    <xacro:include filename="$(find wheelchair)/urdf/ydlidar.urdf" />
+    <joint name="base_link_to_lidar" type="fixed">
+        <parent link="base_link" />
+        <child link="base_laser" />
+        <origin rpy="0 0 0" xyz="0.73 -0.24 0.31" />
+    </joint>
+    <gazebo reference="laser_frame">
+        <material>Gazebo/FlatBlack</material>
+        <sensor type="ray" name="head_ydlidar_sensor">
+          <pose>0 0 0 0 0 1</pose>
+          <visualize>true</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>720</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14159265</min_angle>
+                <max_angle>3.14159265</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.2</min>
+              <max>10</max>
+              <resolution>0.01</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </ray>
+          <plugin name="gazebo_ros_head_ydlidar_controller" filename="libgazebo_ros_laser.so">
+            <topicName>/scan</topicName>
+            <frameName>laser_frame</frameName>
+          </plugin>
+        </sensor>
+      </gazebo>
+</robot>
+<!-- https://books.google.com/books?id=g3JQDwAAQBAJ&pg=PA146&lpg=PA146&dq=combine+two+xacro+files+into+one&source=bl&ots=8_ESziqHz3&sig=ACfU3U0CTOcBiN8lCGEifr9XcoAFoy57mg&hl=en&sa=X&ved=2ahUKEwjlpcWL3KLoAhU4mnIEHX1UBo4Q6AEwAnoECAkQAQ#v=onepage&q=combine%20two%20xacro%20files%20into%20one&f=false -->
+<!-- http://wiki.ros.org/urdf/Tutorials/Using%20Xacro%20to%20Clean%20Up%20a%20URDF%20File -->
+<!-- http://gazebosim.org/tutorials?tut=ros_urdf#RigidlyFixingAModeltotheWorld -->
+
+<!-- https://www.youtube.com/watch?v=3qCh-p-hzCM -->
+<!-- https://www.generationrobots.com/blog/en/robotic-simulation-scenarios-with-gazebo-and-ros/ -->
+<!-- http://gazebosim.org/tutorials/?tut=ros_control#Createa.yamlconfigfile -->
+
+<!-- https://github.com/SMARTlab-Purdue/ros-tutorial-gazebo-simulation/wiki/Sec.-4:-Creating-a-light-sensor-plugin -->
+<!-- https://www.seeedstudio.com/blog/2018/11/09/rplidar-and-ros-the-best-way-to-learn-robot-and-slam/ -->

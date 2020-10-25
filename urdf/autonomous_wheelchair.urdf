@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="autonomous_wheelchair">
+
+<gazebo reference="plank">
+	<material>Gazebo/Wood</material>
+</gazebo>
+<gazebo reference="front_right_wheel">
+	<material>Gazebo/Black</material>
+</gazebo>
+<gazebo reference="front_left_wheel">
+	<material>Gazebo/Black</material>
+</gazebo>
+<gazebo reference="rear_right_wheel">
+	<material>Gazebo/Black</material>
+</gazebo>
+<gazebo reference="rear_left_wheel">
+	<material>Gazebo/Black</material>
+</gazebo>
+
+  <link
+    name="base_link">
+<!--<inertial>
+      <origin
+        xyz="0.27958 -7.2116E-05 0.43933"
+        rpy="0 0 0" />
+      <mass
+        value="3" />
+      <inertia
+        ixx="1.7487"
+        ixy="0.00034236"
+        ixz="0.2847"
+        iyy="1.6597"
+        iyz="0.00036148"
+        izz="1.2894" />
+    </inertial> -->
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="plank">
+    <inertial>
+      <origin
+        xyz="-0.097342 0.0074092 0.044893"
+        rpy="0 0 0" />
+      <mass
+        value="5" />
+      <inertia
+        ixx="0.35621"
+        ixy="-5.9641E-08"
+        ixz="-1.1736E-17"
+        iyy="1.0289"
+        iyz="3.4237E-17"
+        izz="0.68758" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/plank.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79 0.64 0.44 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/plank.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="base_link_to_plank"
+    type="fixed">
+    <origin
+      xyz="0.4055 0 0.1784"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="plank" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_left_holder">
+    <inertial>
+      <origin
+        xyz="-0.015916 0.0125 -0.0034239"
+        rpy="0 0 0" />
+      <mass
+        value="0.013916" />
+      <inertia
+        ixx="1.6097E-06"
+        ixy="3.7878E-23"
+        ixz="-2.1561E-22"
+        iyy="1.4361E-06"
+        iyz="9.2764E-23"
+        izz="1.276E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_left_holder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_left_holder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="plank_to_rear_left_holder"
+    type="fixed">
+    <origin
+      xyz="0.38708 0.080497 -0.3265"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="plank" />
+    <child
+      link="rear_left_holder" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_left_wheel">
+    <inertial>
+      <origin
+        xyz="-1.73472347597681E-18 -0.0125 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.475877090500939" />
+      <inertia
+        ixx="0.000747122478607138"
+        ixy="1.97049696473961E-19"
+        ixz="9.48676900924816E-20"
+        iyy="0.00144483045238024"
+        iyz="-4.10482747025861E-20"
+        izz="0.000747122478607138" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_left_holder_to_wheel"
+    type="continuous">
+    <origin
+      xyz="-0.02 0.036 -0.00342393488164091"
+      rpy="0 -1.28160102444594 3.14159265358979" />
+    <parent
+      link="rear_left_holder" />
+    <child
+      link="rear_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="rear_right_holder">
+    <inertial>
+      <origin
+        xyz="-0.0159160558559361 0.0125 -0.00342393488164092"
+        rpy="0 0 0" />
+      <mass
+        value="0.0139162856612381" />
+      <inertia
+        ixx="1.60965110021202E-06"
+        ixy="5.67303009446795E-23"
+        ixz="-1.08312709090844E-22"
+        iyy="1.43608495185743E-06"
+        iyz="1.88362218180338E-22"
+        izz="1.27604694135772E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_right_holder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_right_holder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="plank_to_rear_right_holder"
+    type="fixed">
+    <origin
+      xyz="0.38708 0.080497 0.3015"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="plank" />
+    <child
+      link="rear_right_holder" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rear_right_wheel">
+    <inertial>
+      <origin
+        xyz="-6.6266436782314E-16 0.0125000000000002 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.475877090500939" />
+      <inertia
+        ixx="0.000747122478607139"
+        ixy="2.36284416600098E-18"
+        ixz="-2.71050543121377E-20"
+        iyy="0.00144483045238025"
+        iyz="2.6739930966527E-19"
+        izz="0.000747122478607139" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/rear_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_right_holder_to_wheel"
+    type="continuous">
+    <origin
+      xyz="-0.02 -0.011 -0.0034239"
+      rpy="0 -1.2785 -3.1416" />
+    <parent
+      link="rear_right_holder" />
+    <child
+      link="rear_right_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="front_left_holder">
+    <inertial>
+      <origin
+        xyz="0.0250416081121073 0.0302871041420034 -2.5519922008943E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.0413690931787593" />
+      <inertia
+        ixx="4.14963317414414E-05"
+        ixy="-7.33878003828127E-06"
+        ixz="-1.89867870734612E-11"
+        iyy="3.21113855130348E-05"
+        iyz="3.2034781616693E-11"
+        izz="4.81447029114451E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_left_holder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_left_holder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="plank_to_front_left_holder"
+    type="continuous">
+    <origin
+      xyz="-0.282495360870409 0.0365046391295911 -0.157495360870408"
+      rpy="0 0 0" />
+    <parent
+      link="plank" />
+    <child
+      link="front_left_holder" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="front_left_wheel">
+    <inertial>
+      <origin
+        xyz="0 -3.33066907387547E-16 1.38777878078145E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.31504523647005" />
+      <inertia
+        ixx="0.000287797063737869"
+        ixy="-1.44761962630683E-19"
+        ixz="-8.45006102807287E-35"
+        iyy="0.000528700705862961"
+        iyz="-2.6956698631568E-20"
+        izz="0.000287797063737869" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_left_holder_to_wheel"
+    type="continuous">
+    <origin
+      xyz="0.0399999999999995 0.0839000000000001 0"
+      rpy="1.5707963267949 0 3.14159265358979" />
+    <parent
+      link="front_left_holder" />
+    <child
+      link="front_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="front_right_holder">
+    <inertial>
+      <origin
+        xyz="0.0250416081121072 0.0302871041420034 -2.5519922008943E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.0413690931787593" />
+      <inertia
+        ixx="4.14963317414414E-05"
+        ixy="-7.33878003828121E-06"
+        ixz="-1.89867870760653E-11"
+        iyy="3.21113855130348E-05"
+        iyz="3.20347816155861E-11"
+        izz="4.81447029114451E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_right_holder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_right_holder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="plank_to_front_right_holder"
+    type="continuous">
+    <origin
+      xyz="-0.282495360870409 0.0365046391295908 0.157504639129592"
+      rpy="0 0 0" />
+    <parent
+      link="plank" />
+    <child
+      link="front_right_holder" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="front_right_wheel">
+    <inertial>
+      <origin
+        xyz="-1.11022302462516E-16 0.00500000000000006 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.31504523647005" />
+      <inertia
+        ixx="0.000287797063737869"
+        ixy="-3.56476658932891E-19"
+        ixz="0"
+        iyy="0.000528700705862961"
+        iyz="1.13968914376084E-20"
+        izz="0.000287797063737869" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_wheelchair/meshes/front_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_right_holder_to_wheel"
+    type="continuous">
+    <origin
+      xyz="0.0399999999999995 0.0839 0"
+      rpy="1.5707963267949 0 -3.14139613442679" />
+    <parent
+      link="front_right_holder" />
+    <child
+      link="front_right_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+
+      <joint name="base_link_to_lidar" type="fixed">
+        <parent link="base_link" />
+        <child link="base_laser" />
+        <origin rpy="0 0 0" xyz="0.75 -0.23 0.3" />
+    </joint>
+    <link name="base_laser">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://autonomous_wheelchair/meshes/ydlidar.dae"/>
+      </geometry>
+    </visual>
+   </link>
+
+    <gazebo reference="base_laser">
+        <material>Gazebo/FlatBlack</material>
+        <sensor type="ray" name="head_ydlidar_sensor">
+          <pose>0 0 0 0 0 1</pose>
+          <visualize>false</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>720</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14159265</min_angle>
+                <max_angle>3.14159265</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.7</min>
+              <max>9</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name="gazebo_ros_head_ydlidar_controller" filename="libgazebo_ros_laser.so">
+            <topicName>/scan</topicName>
+            <frameName>base_laser</frameName>
+          </plugin>
+        </sensor>
+    </gazebo>
+</robot>
