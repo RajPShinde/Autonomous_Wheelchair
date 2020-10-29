@@ -1,0 +1,1 @@
+controller_joint_names: ['', 'rear_left_holder_to_wheel', 'rear_right_holder_to_wheel', 'front_left_holder_to_wheel', 'front_right_holder_to_wheel','plank_to_front_right_holder(caster)','plank_to_front_left_holder(caster)' ]

@@ -23,20 +23,6 @@
 
   <link
     name="base_link">
-<!--<inertial>
-      <origin
-        xyz="0.27958 -7.2116E-05 0.43933"
-        rpy="0 0 0" />
-      <mass
-        value="3" />
-      <inertia
-        ixx="1.7487"
-        ixy="0.00034236"
-        ixz="0.2847"
-        iyy="1.6597"
-        iyz="0.00036148"
-        izz="1.2894" />
-    </inertial> -->
     <visual>
       <origin
         xyz="0 0 0"
@@ -553,31 +539,54 @@
     </visual>
    </link>
 
-    <gazebo reference="base_laser">
-        <material>Gazebo/FlatBlack</material>
-        <sensor type="ray" name="head_ydlidar_sensor">
-          <pose>0 0 0 0 0 1</pose>
-          <visualize>false</visualize>
-          <update_rate>40</update_rate>
-          <ray>
-            <scan>
-              <horizontal>
-                <samples>720</samples>
-                <resolution>1</resolution>
-                <min_angle>-3.14159265</min_angle>
-                <max_angle>3.14159265</max_angle>
-              </horizontal>
-            </scan>
-            <range>
-              <min>0.7</min>
-              <max>9</max>
-              <resolution>0.01</resolution>
-            </range>
-          </ray>
-          <plugin name="gazebo_ros_head_ydlidar_controller" filename="libgazebo_ros_laser.so">
-            <topicName>/scan</topicName>
-            <frameName>base_laser</frameName>
-          </plugin>
-        </sensor>
-    </gazebo>
+  <gazebo reference="base_laser">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="ray" name="head_ydlidar_sensor">
+      <pose>0 0 0 0 0 1</pose>
+      <visualize>false</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159265</min_angle>
+            <max_angle>3.14159265</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.7</min>
+          <max>9</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="gazebo_ros_head_ydlidar_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>base_laser</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <transmission name="rear_left_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_holder_to_wheel" >
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_left_wheel_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>    
+  </transmission>
+
+  <transmission name="rear_right_wheel_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_holder_to_wheel" >
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_right_wheel_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission> 
+  
 </robot>
