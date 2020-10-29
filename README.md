@@ -21,10 +21,10 @@ A ROS Stack to make a Wheelchair Navigate Wheelchair Autonomously in an indoor E
 ## Description
 
 ## Sprint Planning and Discussion
-Sprint- [Link](https://docs.google.com/document/d/1YxuiONLKsmspN5a6GJSREl9pPx3vZLULn2Mh-LnGHLA/edit?usp=sharing)
+Sprint Discussion's - [Link](https://docs.google.com/document/d/1YxuiONLKsmspN5a6GJSREl9pPx3vZLULn2Mh-LnGHLA/edit?usp=sharing)
 
 ## Agile Iterative Process Log
-Log- [Link](https://docs.google.com/spreadsheets/d/16jTj_WTD0Le5l6ijkAiI3PhKVDuv9GQzufeO_Imgy9o/edit?usp=sharing)
+Access Product Backlog, Worklog & Iteration Log here- [Link](https://docs.google.com/spreadsheets/d/16jTj_WTD0Le5l6ijkAiI3PhKVDuv9GQzufeO_Imgy9o/edit?usp=sharing)
 
 ## Dependencies
 1. Ubuntu 16.04
