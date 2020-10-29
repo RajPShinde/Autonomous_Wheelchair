@@ -567,6 +567,28 @@
     </sensor>
   </gazebo>
 
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <updateRate>60</updateRate>
+      <robotNamespace>/autonomous_wheelchair</robotNamespace>
+      <leftJoint>rear_left_holder_to_wheel</leftJoint>
+      <rightJoint>rear_right_holder_to_wheel</rightJoint>
+      <wheelSeparation>0.624 </wheelSeparation>
+      <wheelDiameter>0.0779</wheelDiameter>
+      <wheelAcceleration>0.5</wheelAcceleration>
+      <wheelTorque>20</wheelTorque>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <odometrySource>1</odometrySource>
+      <publishWheelTF>true</publishWheelTF>
+      <publishOdom>false</publishOdom>
+      <publishWheelJointState>true</publishWheelJointState>
+      <legacyMode>false</legacyMode>
+    </plugin>
+  </gazebo>
+
   <transmission name="rear_left_wheel_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="rear_left_holder_to_wheel" >
@@ -588,5 +610,4 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission> 
-  
 </robot>
