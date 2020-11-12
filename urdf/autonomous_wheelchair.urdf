@@ -570,7 +570,7 @@
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <updateRate>60</updateRate>
-      <robotNamespace>/autonomous_wheelchair</robotNamespace>
+      <robotNamespace>/</robotNamespace>
       <leftJoint>rear_left_holder_to_wheel</leftJoint>
       <rightJoint>rear_right_holder_to_wheel</rightJoint>
       <wheelSeparation>0.624 </wheelSeparation>
@@ -581,9 +581,10 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <robotBaseFrame>base_link</robotBaseFrame>
-      <odometrySource>1</odometrySource>
-      <publishWheelTF>true</publishWheelTF>
-      <publishOdom>false</publishOdom>
+      <odometrySource>world</odometrySource>
+      <publishWheelTF>false</publishWheelTF>
+      <publishOdomTF>true</publishOdomTF>
+      <publishOdom>true</publishOdom>
       <publishWheelJointState>true</publishWheelJointState>
       <legacyMode>false</legacyMode>
     </plugin>
