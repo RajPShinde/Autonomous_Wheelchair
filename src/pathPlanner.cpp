@@ -283,15 +283,37 @@ bool AStarPlanner::isStartAndGoalValid(int startCell, int goalCell) {
 }
 
 float AStarPlanner::getMoveToCellCost(int i1, int j1, int i2, int j2) {
-
+  float moveCost = infinity;
+  //  if moving in diagonal, then h movecost is root 2
+  if ((j2 == j1 + 1 && i2 == i1 + 1) || (i2 == i1 - 1 && j2 == j1 + 1)
+      || (i2 == i1 - 1 && j2 == j1 - 1) || (j2 == j1 - 1 && i2 == i1 + 1)) {
+    moveCost = 1.4;
+  } else {
+    //  if moving in straight line, then h movecost is 1
+    if ((j2 == j1 && i2 == i1 - 1) || (i2 == i1 && j2 == j1 - 1)
+       || (i2 == i1 + 1 && j2 == j1) || (i2 == i1 && j2 == j1 + 1)) {
+      moveCost = 1;
+    }
+  }
+  return moveCost;
 }
 
 float AStarPlanner::getMoveToCellCost(int cellIndex1, int cellIndex2) {
-
+  int i1 = 0, i2 = 0, j1 = 0, j2 = 0;
+  i1 = getCellRowIndex(cellIndex1);
+  j1 = getCellColIndex(cellIndex1);
+  i2 = getCellRowIndex(cellIndex2);
+  j2 = getCellColIndex(cellIndex2);
+  return getMoveToCellCost(i1, j1, i2, j2);
 }
 
 float AStarPlanner::calculateHCellScore(int cellIndex, int goalCellSquare) {
-
+  int x1 = getCellRowIndex(goalCellSquare);
+  int y1 = getCellColIndex(goalCellSquare);
+  int x2 = getCellRowIndex(cellIndex);
+  int y2 = getCellColIndex(cellIndex);
+  float eucNorm = std::sqrt(((x1 - x2)*(x1 - x2)) + ((y1 - y2)*(y1 - y2)));
+  return eucNorm;
 }
 
 int AStarPlanner::calculateCellIndex(int i, int j) {
