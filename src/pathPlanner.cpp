@@ -160,7 +160,89 @@ namespace astar_plugin {
 bool AStarPlanner::makePlan(const geometry_msgs::PoseStamped &start,
                             const geometry_msgs::PoseStamped &goal,
                             std::vector<geometry_msgs::PoseStamped> &plan) {
+  if (!initialized) {
+    ROS_ERROR_STREAM("The planner has not been initialized, please call"
+                      << "initialize() to use the planner");
+    return false;
+  }
+  ROS_INFO_STREAM("Got a start " << start.pose.position.x << ", "
+                   << start.pose.position.y <<  " and a goal:"
+                   << goal.pose.position.x << ", "
+                   << goal.pose.position.y);
+  plan.clear();
+  if (goal.header.frame_id != costmap_ros->getGlobalFrameID()) {
+    ROS_ERROR_STREAM("This planner as configured will only accept goals "
+                     << " in the" << costmap_ros->getGlobalFrameID().c_str()
+                     << " frame, but a goal was sent in the"
+                     << goal.header.frame_id.c_str() << " frame.");
+    return false;
+  }
+  //  take the start and goal to make plan
+  float startX = start.pose.position.x;
+  float startY = start.pose.position.y;
 
+  float goalX = goal.pose.position.x;
+  float goalY = goal.pose.position.y;
+  convertToMapCoordinates(startX, startY);  //  sx - origin, sy -origin
+  convertToMapCoordinates(goalX, goalY);  //  gx - origin, gy - origin
+
+  int startCell = 0;
+  int goalCell = 0;
+  //  check if coordinates are within boundary
+  if (isCoordinateInBounds(startX, startY) &&
+      isCoordinateInBounds(goalX, goalY)) {
+    startCell = getCellIndex(startX, startY);  //  (x/res) * width + (y/res)
+    goalCell = getCellIndex(goalX, goalY);
+  } else {
+    ROS_WARN_STREAM("the start or goal is out of the map");
+    return false;
+  }
+
+  if (isStartAndGoalValid(startCell, goalCell)) {
+    std::vector<int> bestPath;
+    bestPath.clear();
+    //  main function call to run A star on the map
+    bestPath = runAStar(startCell, goalCell);
+    //  run through map to make path
+    if (bestPath.size() > 0) {
+      for (auto& i : bestPath) {
+        float x = 0.0;
+        float y = 0.0;
+        float previous_x = 0.0;
+        float previous_y = 0.0;
+
+        int index = i;
+        int previous_index;
+        getCellCoordinates(index, x, y);
+        if (i != 0) {
+          previous_index = (i-1);
+        } else {
+          previous_index = index;
+        }
+        getCellCoordinates(previous_index, previous_x, previous_y);
+        tf::Vector3 vectorToTarget;
+        vectorToTarget.setValue(x - previous_x, y - previous_y, 0.0);
+
+        float angle = atan2(static_cast<double>(vectorToTarget.y()),
+                            static_cast<double>(vectorToTarget.x()));
+        geometry_msgs::PoseStamped pose = goal;
+        pose.pose.position.x = x;
+        pose.pose.position.y = y;
+        pose.pose.position.z = 0.0;
+        pose.pose.orientation = tf::createQuaternionMsgFromYaw(angle);
+
+        plan.push_back(pose);
+      }
+      return true;
+    } else {
+      ROS_WARN_STREAM("The planner failed to find a path" <<
+                      " choose other goal position");
+      return false;
+    }
+  } else {
+    ROS_WARN_STREAM("Not valid start or goal");
+    return false;
+  }
 }
 
 void AStarPlanner::convertToMapCoordinates(float &x, float &y) {
@@ -205,20 +287,94 @@ bool AStarPlanner::isCoordinateInBounds(float x, float y) {
 }
 
 std::vector<int> AStarPlanner::runAStar(int startCell, int goalCell) {
-
+  std::vector<int> bestPath;
+  std::vector<float> g_score;
+  //  take a vector with infinity values till map size for g function
+  g_score.assign(mapSize, infinity);
+  bestPath = findPath(startCell, goalCell, g_score);
+  return bestPath;
 }
 
 std::vector<int> AStarPlanner::findPath(int startCell,
                                         int goalCell,
                                         std::vector<float> g_score) {
+  value++;
+  std::vector<int> bestPath;
+  std::vector<int> emptyPath;
+  GridSquare cell;
+  std::set<GridSquare> openSquaresList;
+  int currentCell;
 
+  g_score[startCell] = 0;
+  cell.currentGridSquare = startCell;
+  cell.fCost = g_score[startCell] + calculateHCellScore(startCell, goalCell);
+  //  open list to have free cells
+  openSquaresList.insert(cell);
+  currentCell = startCell;
+
+  while (!openSquaresList.empty() && g_score[goalCell] == infinity) {
+    currentCell = openSquaresList.begin()->currentGridSquare;
+    openSquaresList.erase(openSquaresList.begin());
+    std::vector<int> neighborCells;
+    neighborCells = findFreeNeighborCell(currentCell);
+    for (auto& i : neighborCells) {
+      if (g_score[i] == infinity) {
+          g_score[i] = g_score[currentCell] +
+                                          getMoveToCellCost(currentCell,
+                                          i);
+        //  add neighbor cells to list
+        addNeighborCellToOpenList(openSquaresList,
+                                        i,
+                                        goalCell, g_score);
+      }
+    }
+  }
+  if (g_score[goalCell] != infinity) {
+    //  planner constructs path from here
+    bestPath = constructPath(startCell, goalCell, g_score);
+    return bestPath;
+  } else {
+    ROS_INFO_STREAM("Failure to find a path !");
+    return emptyPath;
+  }
 }
 
 
 std::vector<int> AStarPlanner::constructPath(int startCell,
                                              int goalCell,
                                              std::vector<float> g_score) {
+  std::vector<int> bestPath;
+  std::vector<int> path;
 
+  path.insert(path.begin() + bestPath.size(), goalCell);
+  int currentCell = goalCell;
+  //  construct a path that has minimum g and h function value
+  while (currentCell != startCell) {
+    std::vector<int> neighborCells;
+    neighborCells = findFreeNeighborCell(currentCell);
+    std::vector<float> gScoresNeighbors;
+    for (auto& i : neighborCells) {
+      gScoresNeighbors.push_back(g_score[i]);
+    }
+    std::vector<float>::iterator result =
+                  std::min_element(gScoresNeighbors.begin(),
+                                   gScoresNeighbors.end());
+
+    int posMinGScore = std::distance(gScoresNeighbors.begin(), result);
+    currentCell = neighborCells[posMinGScore];
+
+    path.insert(path.begin() + path.size(), currentCell);
+  }
+  int p_size = path.size();
+  std::vector<int> tempPath = path;
+  auto it = 0;
+  //  loop through to make path
+  for (auto& i : path) {
+    bestPath.insert(bestPath.begin() + bestPath.size(),
+                    tempPath[(p_size - (it + 1))]);
+    ++it;
+  }
+  return bestPath;
 }
 
 void AStarPlanner::addNeighborCellToOpenList(
@@ -226,7 +382,11 @@ void AStarPlanner::addNeighborCellToOpenList(
     int neighborCell,
     int goalCell,
     std::vector<float> g_score) {
-
+  GridSquare cell;
+  cell.currentGridSquare = neighborCell;
+  cell.fCost = g_score[neighborCell] +
+               calculateHCellScore(neighborCell, goalCell);
+  openSquaresList.insert(cell);
 }
 
 std::vector<int> AStarPlanner::findFreeNeighborCell(int cell) {
