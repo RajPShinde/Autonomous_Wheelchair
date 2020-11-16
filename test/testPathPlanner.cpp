@@ -67,6 +67,63 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // #include "gridSquare.hpp"
 
 /**
+ * @def TEST(TestPathPlanner, testNodeHandle)
+ * @brief To check if the robot node is testPlanner
+ */
+TEST(TestPathPlanner, testNodeHandle) {
+//  Create a test node handle
+ros::NodeHandle nh;
+astar_plugin::AStarPlanner testPP(nh);
+//  current node name
+const char* node_name = "/testPlanner";
+//  Returns true when robot name is testPlanner
+EXPECT_EQ(node_name, ros::this_node::getName());
+}
+
+/**
+ * @def TEST(TestPathPlanner, testConversionToMap)
+ * @brief To check if the coordinates convert to Map
+ */
+TEST(TestPathPlanner, testConversionToMap) {
+//  Initialise test object
+astar_plugin::AStarPlanner testPP;
+testPP.originX = 0;
+testPP.originY = 0;
+float point = 10.0;
+float& indCoordinate = point;
+//  Convert to map coordinates
+testPP.convertToMapCoordinates(indCoordinate, indCoordinate);
+std::vector<float> testCoordinates {10.0, 10.0};
+//  Should return true when testcoordinates are equal to 10, 10
+EXPECT_EQ(testCoordinates, testPP.getMapCoordinates(indCoordinate,
+                                                    indCoordinate));
+}
+
+/**
+ * @def TEST(TestPathPlanner, testCheckCellCoordinates)
+ * @brief To check for the map coordinates from given coordinates
+ */
+TEST(TestPathPlanner, testCheckCellCoordinates) {
+//  initialise test object
+astar_plugin::AStarPlanner testPP;
+testPP.originX = 0;
+testPP.originY = 0;
+float point = 10.0;
+float& indCoordinate = point;
+int index = 0;
+testPP.width = 10;
+testPP.resolution = 180.0;
+
+//  fetch the cell coordinates using the index, and individual coordinates
+testPP.getCellCoordinates(index, indCoordinate, indCoordinate);
+std::vector<float> testCoordinates {0.0, 0.0};
+
+//  Should return true when the testcoordinates are at origin
+EXPECT_EQ(testCoordinates, testPP.getMapCoordinates(indCoordinate,
+                                                    indCoordinate));
+}
+
+/**
  * @def TEST(TestPathPlanner, testCoordinateBounds)
  * @brief To check if the coordinates are within boundary
  */
