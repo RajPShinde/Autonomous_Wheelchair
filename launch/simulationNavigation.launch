@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+
+  <!--- Launch World -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="gui" value="true" />
+    <arg name="world_name" value="$(find autonomous_wheelchair)/world/careCenter.world"/>
+  </include> 
+  
+  <!-- Spawn Robot -->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-file $(find autonomous_wheelchair)/urdf/autonomous_wheelchair.urdf -urdf -model autonomous_wheelchair" output="screen" />
+  
+  <!-- Robot Description -->
+  <param name="robot_description" textfile="$(find autonomous_wheelchair)/urdf/autonomous_wheelchair.urdf" />
+
+  <!-- State Publishers -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  
+  <!-- Rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autonomous_wheelchair)/config/simulationNavigation.rviz" />
+
+  <!-- Controllers -->
+  <rosparam file="$(find autonomous_wheelchair)/config/controllers.yaml" command="load"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/autonomous_wheelchair" args="left_wheel_controller left_wheel_controller joint_state_controller"/>
+
+  <!-- Map Server -->
+  <arg name="map" default="$(find autonomous_wheelchair)/map/careCenter.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map)"/>
+
+  <!-- AMCL -->
+  <arg name="amcl_launch_xml" default="$(find autonomous_wheelchair)/config/amcl.launch"/>
+  <!-- <include file="$(arg amcl_launch_xml)"/> -->
+  <!-- OR -->
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 100"/>
+  
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find autonomous_wheelchair)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find autonomous_wheelchair)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find autonomous_wheelchair)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find autonomous_wheelchair)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find autonomous_wheelchair)/config/base_local_planner_params.yaml" command="load" />
+  </node>
+       
+</launch>
