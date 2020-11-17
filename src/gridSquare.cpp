@@ -48,9 +48,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gridSquare.hpp"
 
 GridSquare::GridSquare() {
+currentGridSquare = 0;
+fCost = 0.0;
 }
 
 GridSquare::~GridSquare() {
+currentGridSquare = 0;
+fCost = 0.0;
 }
 
 int GridSquare::getCurrentGridSquare() {

@@ -47,6 +47,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "goal.hpp"
 
+typedef actionlib::SimpleActionClient
+<move_base_msgs::MoveBaseAction> MoveBaseClient;
+
 Goal::Goal() {
 }
 
@@ -54,9 +57,39 @@ Goal::~Goal() {
 }
 
 bool Goal::sendGoals() {
+
+  // tell the action client  to spin a thread
+  MoveBaseClient ac("move_base", true);
+
+  // wait for action server
+  while (!ac.waitForServer(ros::Duration(10.0))) {
+    ROS_INFO_STREAM("Waiting for the move_base action server to come up");
+  }
+
+  move_base_msgs::MoveBaseGoal goal;
+
+  // sending goal
+  goal.target_pose.header.frame_id = "map";
+  goal.target_pose.header.stamp = ros::Time::now();
+  goal.target_pose.pose.position.x = 2;
+  goal.target_pose.pose.position.y = 2;
+  goal.target_pose.pose.position.z = 0.0;
+  goal.target_pose.pose.orientation.w = 1.0;
+
+  ROS_INFO_STREAM("Sending goal");
+  ac.sendGoal(goal);
+
+  while (ac.getState() != actionlib::SimpleClientGoalState::SUCCEEDED) {
+  } 
+  
+  ROS_INFO_STREAM("Wheelchair has reached the room");
+
   return true;
 }
 
 int main(int argc, char** argv) {
+  ros::init(argc, argv, "simple_navigation_goals");
+  Goal rooms;
+  rooms.sendGoals();
   return 0;
 }
