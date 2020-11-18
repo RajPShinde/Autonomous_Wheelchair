@@ -3,32 +3,33 @@
 [![Build Status](https://travis-ci.org/RajPShinde/Autonomous_Wheelchair.svg?branch=master)](https://travis-ci.org/RajPShinde/Autonomous_Wheelchair)
 [![Coverage Status](https://coveralls.io/repos/github/RajPShinde/Autonomous_Wheelchair/badge.svg?branch=master&service=github)](https://coveralls.io/github/RajPShinde/Autonomous_Wheelchair?branch=master&service=github)
 [![License BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/RajPShinde/Autonomous_Wheelchair/blob/master/LICENSE)
-[![Documentation](https://img.shields.io/badge/docs-unknown-lightgrey)](https://github.com/RajPShinde/Autonomous_Wheelchair/docs)
+[![Documentation](https://img.shields.io/badge/docs-generated-brightgreen.svg)](https://github.com/RajPShinde/Autonomous_Wheelchair/doxygen)
 ---
 
 ## Authors
-
-* **Raj Prakash Shinde** [GitHub](https://github.com/RajPShinde)
-<br>I am a Masters in Robotics Engineering student at the University of Maryland, College Park. My primary area of interest are Legged Robotics and Automation. 
-* **Shubham Sonawane** [GitHub](https://github.com/shubham1925)
-<br>I am a Master's in Robotics Engineering student at the University of Maryland, College Park.
-* **Prasheel Renkuntla** [GitHub](https://github.com/Prasheel24)
-<br>I am a Master's in Robotics Engineering student at the University of Maryland, College Park. My primary area of interest is in Vision integrated Robot Systems.
-
-## Overview
-A ROS Stack to make a Wheelchair Navigate Wheelchair Autonomously in an indoor Environment.
+* **Raj Prakash Shinde** [Porfolio](https://rajpshinde.github.io/) 
+* **Shubham Sonawane** [Porfolio](https://shubhamsonawane.wixsite.com/portfolio)
+* **Prasheel Renkuntla** [Porfolio](https://prasheel24.github.io/)
 
 ## Description
+A ROS Package to make a Differential-Drive Wheelchair Navigate Autonomously in an indoor Environment using onboard LiDAR and Sonar Sensors. The Wheelchair provides manual control to user through a joystick, in case the wheelchair deviates from its path. 
+<p align="center">
+<img src="data/simulation.gif"/>
+</p>
+<p align="center">
+<img src="data/wheelchair.gif"/>
+</p>
+
+## Dependencies
+1. Ubuntu 16.04 or >
+2. ROS Kinetic or >
+3. Navigation Stack
 
 ## Sprint Planning and Discussion
 Sprint Discussion's - [Link](https://docs.google.com/document/d/1YxuiONLKsmspN5a6GJSREl9pPx3vZLULn2Mh-LnGHLA/edit?usp=sharing)
 
 ## Agile Iterative Process Log
 Access Product Backlog, Worklog & Iteration Log here- [Link](https://docs.google.com/spreadsheets/d/16jTj_WTD0Le5l6ijkAiI3PhKVDuv9GQzufeO_Imgy9o/edit?usp=sharing)
-
-## Dependencies
-1. Ubuntu 16.04
-2. C++ 11/14/17
 
 ## Build
 Steps to build
@@ -42,6 +43,31 @@ git clone https://github.com/RajPShinde/Autonomous_Wheelchair
 cd ~/catkin_ws/
 catkin_make
 ```
+To build tests
+```
+catkin_make tests
+```
+## Run
+Mapping
+```
+source devel/setup.bash
+roslaunch autonomous_wheelchair simulationMapping.launch
+```
+Navigation
+```
+source devel/setup.bash
+roslaunch autonomous_wheelchair simulationNavigation.launch
+```
+Tests
+```
+source devel/setup.bash
+catkin_make run_tests
+```
+## TODO
+REplace with TEB Motion Planner
+
+## Bugs
+None
 
 ## Disclaimer
 ```
