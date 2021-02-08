@@ -1,0 +1,3 @@
+[submodule "ydlidar_ros"]
+	path = ydlidar_ros
+	url = https://github.com/YDLIDAR/ydlidar_ros
